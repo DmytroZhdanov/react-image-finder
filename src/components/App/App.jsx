@@ -8,10 +8,15 @@ export class App extends Component {
     images: [],
     totalImages: 0,
     query: '',
+    status: '',
   };
 
   handleSearch = (images, totalImages, query) => {
     this.setState({ images, totalImages, query });
+  };
+
+  resetImages = () => {
+    this.setState({ images: [] });
   };
 
   handleLoadMore = images => {
@@ -20,17 +25,27 @@ export class App extends Component {
     });
   };
 
+  setStatus = status => {
+    this.setState({ status });
+  };
+
   render() {
-    const { images, totalImages, query } = this.state;
+    const { images, totalImages, query, status } = this.state;
 
     return (
       <Container>
-        <Searchbar onSearch={this.handleSearch} />
+        <Searchbar
+          onSearch={this.handleSearch}
+          setStatus={this.setStatus}
+          resetImages={this.resetImages}
+        />
         <ImageGallery
           images={images}
           totalImages={totalImages}
           query={query}
           onLoadMore={this.handleLoadMore}
+          setStatus={this.setStatus}
+          status={status}
         />
       </Container>
     );

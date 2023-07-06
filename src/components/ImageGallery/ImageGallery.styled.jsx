@@ -1,4 +1,4 @@
-import styled from '@emotion/styled'
+import styled from '@emotion/styled';
 
 export const Gallery = styled.ul`
   display: grid;
@@ -11,4 +11,19 @@ export const Gallery = styled.ul`
   list-style: none;
   margin-left: auto;
   margin-right: auto;
+`;
+
+export const Loader = styled.div`
+  margin: auto;
+`;
+
+export const ErrorMsg = styled.p`
+  font-weight: 600;
+  font-size: 24px;
+  text-align: center;
+`
+
+export const ErrorImg = styled.img`
+  width: 300px;
+  margin: auto;
 `;

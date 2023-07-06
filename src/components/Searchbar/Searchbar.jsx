@@ -12,14 +12,19 @@ export class Searchbar extends Component {
     e.preventDefault();
 
     const { value } = e.target.elements.searchQuery;
-    const { onSearch, page } = this.props;
+    const { onSearch, page, setStatus, resetImages } = this.props;
+
+    resetImages()
+    setStatus('pending')
 
     try {
       const response = await fetchImagebyQuery(value, page);
       const { hits, totalHits } = response;
       onSearch(hits, totalHits, value);
+      setStatus('resolved')
     } catch (error) {
       console.error(error.message);
+      setStatus('rejected')
     } finally {
       window.scrollTo({
         top: 0,
