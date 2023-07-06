@@ -58,15 +58,21 @@ export class ImageGallery extends Component {
   };
 
   render() {
-    const { images, status, query } = this.props;
+    const { images, status, query, setModalImg } = this.props;
     const { page, totalPages } = this.state;
 
     if (status === 'pending' || status === 'resolved') {
       return (
         <>
           <Gallery>
-            {images.map(({ webformatURL, tags }, index) => (
-              <ImageGalleryItem key={index} url={webformatURL} tags={tags} />
+            {images.map(({ webformatURL, tags, largeImageURL }, index) => (
+              <ImageGalleryItem
+                key={index}
+                modalUrl={largeImageURL}
+                url={webformatURL}
+                tags={tags}
+                setModalImg={setModalImg}
+              />
             ))}
           </Gallery>
           {page < totalPages && status !== 'pending' && (
@@ -91,7 +97,9 @@ export class ImageGallery extends Component {
     if (status === 'rejected') {
       return (
         <>
-          <ErrorMsg>Sorry... We couldn't find pictures matching "{query}"</ErrorMsg>
+          <ErrorMsg>
+            Sorry... We couldn't find pictures matching "{query}"
+          </ErrorMsg>
           <ErrorImg src={errorImg} alt="Error" />
         </>
       );

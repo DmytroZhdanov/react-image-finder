@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { Container } from './App.styled';
+import { Modal } from 'components/Modal/Modal';
 
 export class App extends Component {
   state = {
@@ -9,6 +10,7 @@ export class App extends Component {
     totalImages: 0,
     query: '',
     status: '',
+    modalImage: '',
   };
 
   handleSearch = (images, totalImages, query) => {
@@ -29,8 +31,16 @@ export class App extends Component {
     this.setState({ status });
   };
 
+  setModalImg = (src, alt) => {
+    this.setState({modalImage: {src, alt}})
+  }
+
+  resetModalImg = () => {
+    this.setState( {modalImage: ''})
+  }
+
   render() {
-    const { images, totalImages, query, status } = this.state;
+    const { images, totalImages, query, status, modalImage } = this.state;
 
     return (
       <Container>
@@ -46,7 +56,9 @@ export class App extends Component {
           onLoadMore={this.handleLoadMore}
           setStatus={this.setStatus}
           status={status}
+          setModalImg={this.setModalImg}
         />
+        {modalImage && <Modal image={modalImage} onClose={this.resetModalImg} />}
       </Container>
     );
   }

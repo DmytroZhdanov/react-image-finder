@@ -13,14 +13,19 @@ export class Searchbar extends Component {
 
     const { value } = e.target.elements.searchQuery;
     const { onSearch, page, setStatus, resetImages } = this.props;
+    const query = value.trim()
+
+    if (query === '') {
+      return;
+    }
 
     resetImages()
     setStatus('pending')
 
     try {
-      const response = await fetchImagebyQuery(value, page);
+      const response = await fetchImagebyQuery(query, page);
       const { hits, totalHits } = response;
-      onSearch(hits, totalHits, value);
+      onSearch(hits, totalHits, query);
       setStatus('resolved')
     } catch (error) {
       console.error(error.message);
