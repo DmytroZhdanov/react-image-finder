@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Component } from 'react';
-import { ErrorImg, ErrorMsg, Gallery, Loader } from './ImageGallery.styled';
+import { ErrorImg, ErrorMsg, Gallery } from './ImageGallery.styled';
 import { Button } from 'components/Button/Button';
 import { fetchImagebyQuery } from 'ApiService/ApiService';
-import { ThreeDots } from 'react-loader-spinner';
 import errorImg from '../../error.png';
+import { Loader } from 'components/Loader/Loader';
 
 export class ImageGallery extends Component {
   state = {
@@ -78,18 +79,7 @@ export class ImageGallery extends Component {
           {page < totalPages && status !== 'pending' && (
             <Button onClick={this.handleLoadMore} />
           )}
-          {status === 'pending' && (
-            <Loader>
-              <ThreeDots
-                height="80"
-                width="80"
-                radius="9"
-                color="#3f51b5"
-                ariaLabel="three-dots-loading"
-                visible={true}
-              />
-            </Loader>
-          )}
+          {status === 'pending' && <Loader />}
         </>
       );
     }
@@ -106,3 +96,13 @@ export class ImageGallery extends Component {
     }
   }
 }
+
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  totalImages: PropTypes.number.isRequired,
+  query: PropTypes.string.isRequired,
+  onLoadMore: PropTypes.func.isRequired,
+  setStatus: PropTypes.func.isRequired,
+  status: PropTypes.string.isRequired,
+  setModalImg: PropTypes.func.isRequired,
+};

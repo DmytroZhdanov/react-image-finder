@@ -13,10 +13,6 @@ export const Gallery = styled.ul`
   margin-right: auto;
 `;
 
-export const Loader = styled.div`
-  margin: auto;
-`;
-
 export const ErrorMsg = styled.p`
   font-weight: 600;
   font-size: 24px;
