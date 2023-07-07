@@ -3,27 +3,57 @@ import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { Container } from './App.styled';
 import { Modal } from 'components/Modal/Modal';
+import { fetchImages } from 'ApiService/ApiService';
 
 export class App extends Component {
   state = {
     images: [],
     totalImages: 0,
     query: '',
-    status: '',
+    status: 'idle',
     modalImage: '',
+    page: 0,
   };
 
-  handleSearch = (images, totalImages, query) => {
-    this.setState({ images, totalImages, query });
+  componentDidUpdate = async (prevProps, prevState) => {
+    const { page, query } = this.state;
+
+    if (page !== prevState.page || query !== prevState.query) {
+      this.setStatus('pending');
+      try {
+        const response = await fetchImages(query, page);
+        const { hits, totalHits } = response;
+        this.setState({
+          totalImages: totalHits,
+        });
+
+        page !== prevState.page
+          ? this.setState(prevState => {
+              return { images: [...prevState.images, ...hits] };
+            })
+          : this.setState({ images: hits });
+        this.setStatus(totalHits ? 'resolved' : 'rejected');
+      } catch (error) {
+        console.error(error.message);
+        this.setStatus('rejected');
+      }
+
+      if (query !== prevState.query) {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      }
+    }
   };
 
-  resetImages = () => {
-    this.setState({ images: [] });
+  handleSearch = query => {
+    this.setState({ images: [], page: 1, query });
   };
 
-  handleLoadMore = images => {
+  handleLoadMore = () => {
     this.setState(prevState => {
-      return { images: [...prevState.images, ...images] };
+      return { page: prevState.page + 1 };
     });
   };
 
@@ -32,22 +62,20 @@ export class App extends Component {
   };
 
   setModalImg = (src, alt) => {
-    this.setState({modalImage: {src, alt}})
-  }
+    this.setState({ modalImage: { src, alt } });
+  };
 
   resetModalImg = () => {
-    this.setState( {modalImage: ''})
-  }
+    this.setState({ modalImage: '' });
+  };
 
   render() {
-    const { images, totalImages, query, status, modalImage } = this.state;
+    const { images, totalImages, query, status, modalImage, page } = this.state;
 
     return (
       <Container>
         <Searchbar
           onSearch={this.handleSearch}
-          setStatus={this.setStatus}
-          resetImages={this.resetImages}
         />
         <ImageGallery
           images={images}
@@ -57,8 +85,11 @@ export class App extends Component {
           setStatus={this.setStatus}
           status={status}
           setModalImg={this.setModalImg}
+          page={page}
         />
-        {modalImage && <Modal image={modalImage} onClose={this.resetModalImg} />}
+        {modalImage && (
+          <Modal image={modalImage} onClose={this.resetModalImg} />
+        )}
       </Container>
     );
   }

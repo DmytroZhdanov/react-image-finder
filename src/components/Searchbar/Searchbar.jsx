@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { fetchImagebyQuery } from 'ApiService/ApiService';
 import { Component } from 'react';
 import { ImSearch } from 'react-icons/im';
 import { Container, Input, SearchButton, SearchForm } from './Searchbar.styled';
@@ -13,30 +12,14 @@ export class Searchbar extends Component {
     e.preventDefault();
 
     const { value } = e.target.elements.searchQuery;
-    const { onSearch, page, setStatus, resetImages } = this.props;
+    const { onSearch } = this.props;
     const query = value.trim();
 
     if (query === '') {
       return;
     }
 
-    resetImages();
-    setStatus('pending');
-
-    try {
-      const response = await fetchImagebyQuery(query, page);
-      const { hits, totalHits } = response;
-      onSearch(hits, totalHits, query);
-      setStatus('resolved');
-    } catch (error) {
-      console.error(error.message);
-      setStatus('rejected');
-    } finally {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    }
+    onSearch(query);
   };
 
   handleInputChange = e => {
@@ -67,6 +50,6 @@ export class Searchbar extends Component {
 
 Searchbar.propTypes = {
   onSearch: PropTypes.func.isRequired,
-  setStatus: PropTypes.func.isRequired,
-  resetImages: PropTypes.func.isRequired,
+  // setStatus: PropTypes.func.isRequired,
+  // resetImages: PropTypes.func.isRequired,
 };

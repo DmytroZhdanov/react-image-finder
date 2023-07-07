@@ -47,7 +47,7 @@ export class Modal extends Component {
 }
 
 Modal.propTypes = {
-  image: PropTypes.objectOf({
+  image: PropTypes.shape({
     src: PropTypes.string.isRequired,
     alt: PropTypes.string.isRequired,
   }).isRequired,

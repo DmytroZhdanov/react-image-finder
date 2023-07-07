@@ -7,6 +7,7 @@ export const Item = styled.li`
 `;
 
 export const Btn = styled.button`
+  width: 100%;
   padding: 0;
   border: none;
   display: block;
