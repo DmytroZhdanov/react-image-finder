@@ -24,6 +24,31 @@ export class ImageGallery extends Component {
 }
 
 ImageGallery.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      collections: PropTypes.number,
+      comments: PropTypes.number,
+      downloads: PropTypes.number,
+      id: PropTypes.number.isRequired,
+      imageHeight: PropTypes.number,
+      imageSize: PropTypes.number,
+      imageWidth: PropTypes.number,
+      largeImageURL: PropTypes.string.isRequired,
+      likes: PropTypes.number,
+      pageURL: PropTypes.string,
+      previewHeight: PropTypes.number,
+      previewURL: PropTypes.string,
+      previewWidth: PropTypes.number,
+      tags: PropTypes.string.isRequired,
+      type: PropTypes.string,
+      user: PropTypes.string,
+      userImageURL: PropTypes.string,
+      user_id: PropTypes.number,
+      views: PropTypes.number,
+      webformatHeight: PropTypes.number,
+      webformatURL: PropTypes.string.isRequired,
+      webformatWidth: PropTypes.number,
+    }).isRequired
+  ).isRequired,
   setModalImg: PropTypes.func.isRequired,
 };
