@@ -13,13 +13,4 @@ export const Gallery = styled.ul`
   margin-right: auto;
 `;
 
-export const ErrorMsg = styled.p`
-  font-weight: 600;
-  font-size: 24px;
-  text-align: center;
-`
 
-export const ErrorImg = styled.img`
-  width: 300px;
-  margin: auto;
-`;
